@@ -40,9 +40,9 @@ public class PieceIcon extends JButton {
         // Load background base color
         try {
             if(base_value == PieceIcon.RED_BASE) {
-                base_color = ImageIO.read(new FileInputStream(new File("pieces/gray.png")));
+                base_color = ImageIO.read(new FileInputStream(new File("../pieces/gray.png")));
             } else if(base_value == PieceIcon.BEIGE_BASE) {
-                base_color = ImageIO.read(new FileInputStream(new File("pieces/white.jpg")));
+                base_color = ImageIO.read(new FileInputStream(new File("../pieces/white.jpg")));
             }
 
         } catch (Exception e) {

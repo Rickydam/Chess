@@ -123,18 +123,18 @@ def get_ip_address():
 
 # Setup networking
 host_ip = get_ip_address()
-host_port = int(sys.argv[1])
+host_port = 2050
 #camera address
-camera_address = ('22.66.10.194', 2019)
+camera_address = ('26.53.142.85', 2019)
 server_address = ('192.168.43.169', 2016)
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((host_ip, host_port))
 
-HOST = sys.argv[1]
-PORT = int(sys.argv[2])
+HOST =2030
+PORT = 2034
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((HOST, PORT))
+s.bind((get_ip_address(), PORT))
 s.listen(5)
 
 
@@ -167,6 +167,10 @@ while True:
             client.close()
 
             img = cv2.imread('EmptyBoard.png', 0)
+            r = 450.0 / img.shape[1]
+            dim = (450, int(img.shape[0]*r))
+            resized=cv2.resize(img,dim,interpolation=cv2.INTER_AREA)
+            img = resized
             vlines, hlines, harris, blackbg = getChessboardLines(img)
 
             sock.sendto('done'.encode('utf-8'), server_address)
@@ -174,7 +178,9 @@ while True:
 
 
     elif (data == 'before'):
+        pass
     elif (data == 'after'):
+        pass
 
 # Load image as grayscale
 #img = cv2.imread('1.jpg', 0)

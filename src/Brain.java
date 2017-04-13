@@ -8,9 +8,9 @@ public class Brain {
     public static final String LCD_IP = "192.168.43.112";
     public static final String CAMERA_IP = "1.1.1.1";
     public static final int POS_SYS_PORT = 2070;
-    public static final int CLAW_PORT = 2071;
+    public static final int CLAW_PORT = 2072;
     public static final int LCD_PORT = 5005;
-    public static final int CAMERA_PORT = 3000;
+    public static final int CAMERA_PORT = 2075;
 
     // Instance variables
     private Server server;
@@ -18,31 +18,34 @@ public class Brain {
     private GUI gui;
 
     // Constructor
-    public Brain(Server s, EngineUCI e, GUI g) {
+    public Brain(Server s, EngineUCI e) {
         server = s;
         engine = e;
-        gui = g;
     }
 
     // Game start up procedure
     public void startGame() {
         //moveToIdlePosition(); // Send components to starting position
-        calibrateCamera(); // Calibrate camera
-        playerSetupBoard(); // Tell player to setup pieces on board
+        //calibrateCamera(); // Calibrate camera
+        //playerSetupBoard(); // Tell player to setup pieces on board
         gameLoop(); // Enter main game loop
     }
 
     // Main game loop
     private void gameLoop() {
         while(!isGameWon()) {
-            takeBeforePicture(); // Instruct camera to take before picture
+            //takeBeforePicture(); // Instruct camera to take before picture
             playerTakesTurn(); // Tell player its their turn
             String playerMove = takeAfterPicture(); // Instruct camera to take after picture
+            System.out.println ("Got players move");
             //verifyLegalMove(playerMove); // Verify move is legal
-            updateGUI(playerMove); // Update GUI of player's move
+            //updateGUI(playerMove); // Update GUI of player's move
             String computerMove = getComputerMove(playerMove); // Get computer's move
-            updateGUI(computerMove); // Update gui of computer's move
+            System.out.println ("Got computer move");
+            //updateGUI(computerMove); // Update gui of computer's move
             sendPosSysPickup(computerMove); // Send positioning system pickup coordinates
+            System.out.println (computerMove);
+            System.out.println ("Sent pos sys to 1st coord");
             clawPickup(); // Instruct claw to pickup
             sendPosSysDropOff(computerMove); // Send positioning system drop off coordinates
             clawDropOff(); // Instruct claw to drop off
@@ -191,4 +194,16 @@ public class Brain {
         String sec_coord = move.substring(2,4); // Get second coordinate of move
         gui.update(translateIndex(first_coord), translateIndex(sec_coord));
     }
+
+    public static void main(String [] args){
+        //GUI g = new GUI();
+        Server s = new Server();
+        EngineUCI e = new EngineUCI("../Stockfish/stockfish");
+
+        Brain b = new Brain(s, e);
+        b.startGame();
+    }
+
+
+
 }

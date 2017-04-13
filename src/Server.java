@@ -8,6 +8,12 @@ public class Server {
 
     // Constuctor for this class
     public Server() {
+        try {
+            sendreceiveSocket = new DatagramSocket(2099);
+        } catch(SocketException se) {
+            se.printStackTrace();
+            System.exit(1);
+        }
 
     }
 
@@ -15,12 +21,6 @@ public class Server {
     public String sendMessage(String ip, int port, String message) {
 
         // Create a sendreceive socket
-        try {
-            sendreceiveSocket = new DatagramSocket(port);
-        } catch(SocketException se) {
-            se.printStackTrace();
-            System.exit(1);
-        }
 
         // Initialize the ip address
         InetAddress address = null;
