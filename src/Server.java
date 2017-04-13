@@ -6,21 +6,16 @@ public class Server {
     // Global variables
     private DatagramSocket sendreceiveSocket;
 
-    // Constuctor for this class
-    public Server() {
-        try {
-            sendreceiveSocket = new DatagramSocket(2099);
-        } catch(SocketException se) {
-            se.printStackTrace();
-            System.exit(1);
-        }
-
-    }
-
     // Function to send a message by passing in an ip, a port number and a message.
     public String sendMessage(String ip, int port, String message) {
 
         // Create a sendreceive socket
+        try {
+            sendreceiveSocket = new DatagramSocket(port);
+        } catch(SocketException se) {
+            se.printStackTrace();
+            System.exit(1);
+        }
 
         // Initialize the ip address
         InetAddress address = null;
@@ -42,6 +37,7 @@ public class Server {
         }
 
         // Print some information for the user to know what's going on
+        System.out.println();
         System.out.println("messageByte: " + messageByte);
         System.out.println("sendLength: " + sendLength);
         System.out.println("address: " + address);
@@ -54,6 +50,7 @@ public class Server {
         int receivedLength = receivedMessage.length;
         DatagramPacket receivedPacket = new DatagramPacket(receivedMessage, receivedLength);
         // Wait until a packet has been received
+        System.out.println("Waiting...................");
         try {
             sendreceiveSocket.receive(receivedPacket);
         } catch(IOException ioe) {
@@ -61,6 +58,7 @@ public class Server {
             System.exit(1);
         }
 
+        System.out.println();
         System.out.println("Packet has been received from: " + ip);
 
         // Print out the received message
