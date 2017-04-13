@@ -61,7 +61,9 @@ public class EngineUCI {
         sendCommand("go infinite");
         try {
             // Give the engine time to calculate
-            Thread.sleep(WAIT_TIME);
+            Thread.sleep(WAIT_TIME);                // This is the timeout time 
+                                                    // System will not wait longer than this
+
         }catch (Exception e) {}
         
         // Tell the engine to stop calculating best move
@@ -106,7 +108,9 @@ public class EngineUCI {
             String text;
             while (processReader.ready()){
                 text = processReader.readLine();
-                buffer.append(text + "\n");
+                if (!text.equals("")){              // Check response from game engine
+                    buffer.append(text + "\n");
+                }
             }
         } catch (Exception e) {
             System.out.println ("ERROR: Failed to get response from engine");
